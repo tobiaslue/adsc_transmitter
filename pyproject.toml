@@ -1,5 +1,5 @@
 [project]
-name = "adsc_spoofer"
+name = "adsc_transmitter"
 version = "0.0.1"
 
 [tool.setuptools.packages]

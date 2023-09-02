@@ -1,7 +1,7 @@
 ## ADS-C Spoofer
 This project includes code to create, encode and modulate ADS-C messages over ACARS using the Inmarsat satellite network. 
 
-See [adsc.py](adsc_spoofer/src/adsc.py) for possible ADS-C messages. 
+See [adsc.py](adsc_transmitter/src/adsc.py) for possible ADS-C messages. 
 
 ### Build project
 ```

@@ -1,4 +1,4 @@
-from adsc_spoofer import up_event_contract, modulate, get_acars_message, get_p_channel_bits
+from adsc_transmitter import up_event_contract, modulate, get_acars_message, get_p_channel_bits
 
 adsc_message = up_event_contract(
     contract_number=3, 

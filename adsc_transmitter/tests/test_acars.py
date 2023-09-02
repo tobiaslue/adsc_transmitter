@@ -1,6 +1,6 @@
 import unittest
 
-from adsc_spoofer import up_cancel_contract, get_acars_message
+from adsc_transmitter import up_cancel_contract, get_acars_message
 
 
 class TestAcars(unittest.TestCase):

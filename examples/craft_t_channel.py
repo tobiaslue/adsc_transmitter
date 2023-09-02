@@ -1,4 +1,4 @@
-from adsc_spoofer import (
+from adsc_transmitter import (
     modulate,
     get_t_channel_bits,
     down_basic_report,
