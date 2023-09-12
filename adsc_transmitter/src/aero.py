@@ -1,6 +1,7 @@
 import math
 import numpy as np
 from .utils import get_crc, to_bits, to_bytes
+from commpy.filters import rrcosfilter
 
 
 def get_noise(length: int):
@@ -44,6 +45,43 @@ def modulate(bits, data_rate=600):
         [item for sublist in zip(i, r) for item in sublist], dtype=np.float32
     )
 
+def modulate_rrc(bits, data_rate=600):
+    sample_rate = 1536000
+    symbols_per_bit = int(sample_rate / data_rate)
+    T = symbols_per_bit
+
+    diff_bits = [bits[0]]
+    for i, bit in enumerate(bits[1:]):
+        diff_bits.append(bit ^ diff_bits[i])
+
+    oscilator = 0
+    oscilate_bits = []
+    for bit in diff_bits:
+        oscilate_bits.append(bit ^ oscilator)
+        oscilator = 1 if oscilator == 0 else 0
+    # data = [x if x else -1 for x in oscilate_bits]
+    data = oscilate_bits
+
+    odd_bits = [0] * T
+    for i, x in enumerate(data[1::2]):
+        bit = x if i % 2 == 0 else -x
+        odd_bits.append(bit)
+        odd_bits += [0] * (2 * T - 1)
+
+    even_bits = []
+    for i, x in enumerate(data[0::2]):
+        bit = x if i % 2 == 0 else -x
+        even_bits.append(bit)
+        even_bits += [0] * (2 * T - 1)
+    even_bits += [0] * T
+
+    t_filter, rrc_filter = rrcosfilter(101, 0.4, 8, 1)
+    i = np.convolve(even_bits, rrc_filter)
+    r = np.convolve(odd_bits, rrc_filter)
+    
+    return np.array(
+        [item for sublist in zip(i, r) for item in sublist], dtype=np.float32
+    )
 
 def aero_crc(data):
     return get_crc(data)

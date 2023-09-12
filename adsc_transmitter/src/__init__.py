@@ -20,7 +20,8 @@ from .adsc import (
     down_fixed_projected_intent_group,
     down_waypoint_change_event,
     down_altitude_change_event,
-    down_vertical_change_even
+    down_vertical_change_event,
+    down_lateral_deviation_change_event
 )
-from .aero import get_p_channel_bits, get_t_channel_bits, get_r_channel_bits, modulate
+from .aero import get_p_channel_bits, get_t_channel_bits, get_r_channel_bits, modulate, modulate_rrc
 from .utils import to_bits

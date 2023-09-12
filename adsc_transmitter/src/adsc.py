@@ -218,7 +218,7 @@ def __earth_reference_group(
     true_track_number = int(true_track / (180 / 2**11))
     ground_speed_number = int(ground_speed / 0.5)
     vertical_rate_number = int(vertical_rate / 16)
-    return __get_reference_group(
+    return to_bits([14], "big", 8) + __get_reference_group(
         true_track_number, ground_speed_number, vertical_rate_number
     )
 
@@ -226,10 +226,7 @@ def __earth_reference_group(
 def down_earth_reference_group(
     true_track: int, ground_speed: int, vertical_rate: int
 ) -> bytes:
-    return to_bytes(
-        to_bits([14], "big", 8)
-        + __earth_reference_group(true_track, ground_speed, vertical_rate)
-    )
+    return to_bytes(__earth_reference_group(true_track, ground_speed, vertical_rate))
 
 
 def down_basic_report(
@@ -251,7 +248,8 @@ def __predicted_route_group(
     next_alt: int,
 ):
     return (
-        __get_coordinate(lat)
+        to_bits([13], "big", 8)
+        + __get_coordinate(lat)
         + __get_coordinate(long)
         + [0]
         + to_bits([int(alt / 4)], "big", 15)
@@ -274,8 +272,7 @@ def down_predicted_route_group(
     next_alt: int,
 ) -> bytes:
     return to_bytes(
-        to_bits([13], "big", 8)
-        + __predicted_route_group(lat, long, alt, eta, next_lat, next_long, next_alt)
+        __predicted_route_group(lat, long, alt, eta, next_lat, next_long, next_alt)
     )
 
 
@@ -344,7 +341,7 @@ def down_fixed_projected_intent_group(
     )
 
 
-def down_vertical_change_even(
+def down_vertical_change_event(
     lat: float,
     long: float,
     alt: int,
@@ -398,4 +395,23 @@ def down_waypoint_change_event(
             next_next_long,
             next_next_alt,
         )
+    )
+
+
+def down_lateral_deviation_change_event(
+    lat,
+    long,
+    alt,
+    time_stamp,
+    redundancy,
+    accuracy,
+    tcas,
+    true_track: int,
+    ground_speed: int,
+    vertical_rate: int,
+):
+    return to_bytes(
+        to_bits([10], "big", 8)
+        + __get_basic_report(lat, long, alt, time_stamp, redundancy, accuracy, tcas)
+        + __earth_reference_group(true_track, ground_speed, vertical_rate)
     )

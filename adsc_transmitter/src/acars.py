@@ -112,7 +112,7 @@ def get_acars_message(
     )
 
 
-def get_crc_test(data) -> list[int]:
+def get_acars_crc(data) -> list[int]:
     crc = 0
     for byte in data:
         crc ^= byte
@@ -127,5 +127,5 @@ def get_crc_test(data) -> list[int]:
 
 def get_block_check_sequence(data: bytes) -> bytes:
     """ARINC-618, 2.3.10"""
-    crc = get_crc_test(data)
+    crc = get_acars_crc(data)
     return to_bytes(crc)
