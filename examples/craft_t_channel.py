@@ -2,7 +2,7 @@ from adsc_transmitter import (
     get_t_channel_bits,
     get_acars_message,
     down_vertical_change_event,
-    modulate_rrc
+    modulate
 )
 
 time = (5, 10)
@@ -14,5 +14,5 @@ data_bits = [get_t_channel_bits(acars_message, "06E010", "90", 7, 0, 1)]
 bits_to_modulate = get_t_channel_bits(acars_message, "06E010", "90", 7, 0, 1)
 
 with open("./fake_t_packet.BIN", "wb") as f:
-    iq_samples = modulate_rrc(bits_to_modulate, data_rate=1200)
+    iq_samples = modulate(bits_to_modulate, data_rate=1200)
     f.write(iq_samples.tobytes())
