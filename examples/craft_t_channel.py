@@ -4,7 +4,6 @@ from adsc_transmitter import (
     down_vertical_change_event,
     modulate_rrc
 )
-import random
 
 time = (5, 10)
 
