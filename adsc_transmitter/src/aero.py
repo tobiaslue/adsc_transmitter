@@ -59,8 +59,7 @@ def modulate_rrc(bits, data_rate=600):
     for bit in diff_bits:
         oscilate_bits.append(bit ^ oscilator)
         oscilator = 1 if oscilator == 0 else 0
-    # data = [x if x else -1 for x in oscilate_bits]
-    data = oscilate_bits
+    data = [x if x else -1 for x in oscilate_bits]
 
     odd_bits = [0] * T
     for i, x in enumerate(data[1::2]):
